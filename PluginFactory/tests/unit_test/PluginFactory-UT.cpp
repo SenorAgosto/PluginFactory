@@ -70,6 +70,6 @@ namespace {
     
     TEST_FIXTURE(PluginFactoryFixture, callCreatePluginWithCreateShared)
     {
-        auto plugin = factory.instance("something", PluginFactory::create_shared);
+        auto plugin = factory.instance("something", PluginFactory::PluginFactory::create_shared);
     }
 }
