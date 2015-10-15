@@ -2,6 +2,7 @@
 #include <PluginFactory/details/NullPluginService.hpp>
 #include <PluginFactory/details/PluginHandle.hpp>
 #include <PluginFactory/details/PolicyHolder.hpp>
+#include <PluginFactory/details/PluginLoader.hpp>
 #include <PluginFactory/details/PolicyProperties.hpp>
 #include <PluginFactory/Exceptions.hpp>
 
@@ -57,6 +58,10 @@ namespace PluginFactory {
         std::unordered_map<PluginPath, PluginHandle<PluginInterface, PluginServiceInterface>> plugins_;
         
         boost::filesystem::path pluginDirectory_;
+        
+        std::string pluginVersion_;
+        std::string compilerToken_;
+        std::string serviceVersion_;
     };
     
     
@@ -80,16 +85,32 @@ namespace PluginFactory {
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
     void PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::load()
     {
-        // [ARG]: TODO: implement
-        // iterate over the directory collecting all shared libs (dylib on mac, so on linux, dll/DLL on windows)
-        //
+        for(boost::filesystem::directory_iterator iter(pluginDirectory_), end; iter != end; ++iter)
+        {
+            // TODO: check each regular file's extension to see if it is the correct
+            // extension for a shared lib on this platform.
+        }
     }
     
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
     void PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::load(const boost::filesystem::path& pluginPath)
     {
-        // [ARG]: TODO: implement
-        // load the plugin
+        try
+        {
+            details::PluginLoader loader(pluginPath);
+
+            loader.validateCompiler(compilerToken_);
+            loader.validatePluginVersion(pluginVersion_);
+            loader.validatePluginServiceVersion(serviceVersion_);
+            
+            auto pluginHandle = loader.getPluginHandle<PluginInterface, PluginServiceInterface>();
+            plugins_.emplace(pluginPath.string(), pluginHandle);
+        }
+        // TODO: make this exception more specific, we don't want to catch all of
+        // e
+        catch(const std::exception& e)
+        {
+        }
     }
     
     
