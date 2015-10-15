@@ -1,1 +1,5 @@
-MAKE_LIBRARY(PluginFactory)
+MAKE_LIBRARY(PluginFactory
+    DEPENDENCIES
+	${Boost_LIBRARIES}
+)
+
