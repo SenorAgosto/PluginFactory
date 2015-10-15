@@ -46,8 +46,18 @@ namespace {
         CHECK_EQUAL(0U, plugins.size());
     }
     
+    // *************
+    //
+    // The tests below here don't proove anything, merely
+    // ensure the class template methods are instantiated.
+    //
     TEST_FIXTURE(PluginFactoryFixture, callCreatePlugin)
     {
         auto plugin = factory.instance("something");
+    }
+    
+    TEST_FIXTURE(PluginFactoryFixture, callCreatePluginWithCreateShared)
+    {
+        auto plugin = factory.instance("something", PluginFactory::create_shared);
     }
 }
