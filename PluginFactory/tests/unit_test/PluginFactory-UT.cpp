@@ -43,17 +43,11 @@ namespace {
     TEST_FIXTURE(PluginFactoryFixture, verifyLoad)
     {
         auto plugins = factory.availablePlugins();
-        CHECK_EQUAL(2U, plugins.size());
+        CHECK_EQUAL(0U, plugins.size());
     }
     
-    TEST_FIXTURE(PluginFactoryFixture, verifyPluginFactoryUnload)
+    TEST_FIXTURE(PluginFactoryFixture, callCreatePlugin)
     {
-        auto plugins = factory.availablePlugins();
-        REQUIRE CHECK_EQUAL(2U, plugins.size());
-        
-        factory.unload();
-        auto afterUnloadPlugins = factory.availablePlugins();
-        
-        CHECK_EQUAL(0U, afterUnloadPlugins.size());
+        auto plugin = factory.instance("something");
     }
 }
