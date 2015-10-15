@@ -3,6 +3,7 @@
 #include <PluginFactory/details/PluginHandle.hpp>
 #include <PluginFactory/details/PolicyHolder.hpp>
 #include <PluginFactory/details/PolicyProperties.hpp>
+#include <PluginFactory/Exceptions.hpp>
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
@@ -65,12 +66,12 @@ namespace PluginFactory {
     {
         if(!boost::filesystem::exists(pluginDirectory_))
         {
-            // [ARG]: TODO: throw
+            throw PluginPathDoesntExist(pluginDirectory_);
         }
         
         if(!boost::filesystem::is_directory(pluginDirectory_))
         {
-            // [ARG]: TODO: throw
+            throw PluginPathIsntDirectory(pluginDirectory_);
         }
     }
     

@@ -1,6 +1,8 @@
 #include "./platform/UnitTestSupport.hpp"
 
 #include <PluginFactory/PluginFactory.hpp>
+#include <PluginFactory/Exceptions.hpp>
+
 #include <vector>
 
 namespace {
@@ -26,6 +28,16 @@ namespace {
     
     TEST_FIXTURE(PluginFactoryFixture, verifyPluginFactoryInstantiation)
     {
+    }
+    
+    TEST(verifyPluginFactoryInstantiationThrowsOnPathDoesntExist)
+    {
+        CHECK_THROW(PluginFactory::PluginFactory<PluginInterface> factory("/ThisPath/Doesnt/Exist"), PluginFactory::PluginPathDoesntExist);
+    }
+    
+    TEST(verifyPluginFactoryInstantiationThrowsOnAPathWhichIsntDirectory)
+    {
+        CHECK_THROW(PluginFactory::PluginFactory<PluginInterface> factory("./cmake_install.cmake"), PluginFactory::PluginPathIsntDirectory);
     }
     
     TEST_FIXTURE(PluginFactoryFixture, verifyLoad)
