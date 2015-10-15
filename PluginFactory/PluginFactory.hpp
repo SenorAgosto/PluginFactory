@@ -28,7 +28,8 @@ namespace PluginFactory {
     // engage in crazy behavior like calling willy-nilly into the base process's code.
     //
     // NOTE: lifetime management using plugins can be difficult. It is essential
-    // the PluginFactory stays in scope longer than any instanced plugin.
+    // the PluginFactory stays in scope longer than any instanced plugin. Failure
+    // to do so will most likely end in the process crashing.
     template<class PluginInterface, class PluginServiceInterface = details::NullPluginService, class PolicyOwnershipProperty = details::PolicyIsInternal>
     class PluginFactory : public details::PolicyHolder<PluginServiceInterface, PolicyOwnershipProperty>
     {
