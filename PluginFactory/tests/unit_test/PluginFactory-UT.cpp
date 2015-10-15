@@ -46,11 +46,23 @@ namespace {
         CHECK_EQUAL(0U, plugins.size());
     }
     
-    // *************
+    /////////////////////////////////////////////////////
     //
     // The tests below here don't proove anything, merely
     // ensure the class template methods are instantiated.
     //
+    
+    
+    TEST_FIXTURE(PluginFactoryFixture, callLoadWithPath)
+    {
+        factory.load("path/to/plugin");
+    }
+    
+    TEST_FIXTURE(PluginFactoryFixture, callUnloadWithPath)
+    {
+        factory.unload("path/to/plugin");
+    }
+    
     TEST_FIXTURE(PluginFactoryFixture, callCreatePlugin)
     {
         auto plugin = factory.instance("something");

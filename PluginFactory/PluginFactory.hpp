@@ -101,7 +101,7 @@ namespace PluginFactory {
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
     void PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::unload(const boost::filesystem::path& pluginPath)
     {
-        auto iter = plugins_.find(pluginPath);
+        auto iter = plugins_.find(pluginPath.string());
         if(iter != plugins_.end())
         {
             plugins_.erase(iter);
