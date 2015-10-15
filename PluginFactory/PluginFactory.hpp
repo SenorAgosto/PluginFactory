@@ -24,7 +24,8 @@ namespace PluginFactory {
     // a PluginFactory for each different type of plugin you wish to support.
     //
     // <PluginServiceInterface> is the interface given to the plugin to allow it to make
-    // modifications to the main program.
+    // modifications to the main program. This is to encourage plugin developers not to
+    // engage in crazy behavior like calling willy-nilly into the base process's code.
     //
     // NOTE: lifetime management using plugins can be difficult. It is essential
     // the PluginFactory stays in scope longer than any instanced plugin.
@@ -44,15 +45,15 @@ namespace PluginFactory {
         void unload();      // unload all loaded plugins
         void unload(const boost::filesystem::path& pluginPath); // unload a specific plugin (@pluginPath)
         
-        std::unique_ptr<PluginInterface> instance(const std::string& plugin) const;
-        std::shared_ptr<PluginInterface> instance(const std::string& pluginName, AsSharedTagType /*create_shared*/) const;
+        std::unique_ptr<PluginInterface> instance(const std::string& plugin);
+        std::shared_ptr<PluginInterface> instance(const std::string& pluginName, AsSharedTagType /*create_shared*/);
         
         std::vector<std::string> availablePlugins() const;
         
-    private:        
+    private:
         using PluginPath = std::string;
         using PluginInstanceMethod = std::function<PluginInterface* (PluginServiceInterface&)>;
-        std::unordered_map<PluginPath, PluginHandle> plugins_;
+        std::unordered_map<PluginPath, PluginHandle<PluginInterface, PluginServiceInterface>> plugins_;
         
         boost::filesystem::path pluginDirectory_;
     };
@@ -108,24 +109,32 @@ namespace PluginFactory {
     }
 
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
-    std::unique_ptr<PluginInterface> PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::instance(const std::string& plugin) const
+    std::unique_ptr<PluginInterface> PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::instance(const std::string& pluginName)
     {
         std::unique_ptr<PluginInterface> p;
         
-        // [ARG]: TODO: implement
-        auto iter = plugins_.find(plugin);
-        auto& createPlugin = iter.second;
+        auto iter = plugins_.find(pluginName);
+        if(iter != plugins_.end())
+        {
+            auto& createPlugin = iter->second;
+            p.reset(createPlugin(this->policy_));
+        }
         
-//        p.reset(createPlugin(
         return p;
     }
     
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
-    std::shared_ptr<PluginInterface> PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::instance(const std::string& pluginName, AsSharedTagType) const
+    std::shared_ptr<PluginInterface> PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::instance(const std::string& pluginName, AsSharedTagType)
     {
         std::shared_ptr<PluginInterface> p;
         
-        // [ARG]: TODO: implement
+        auto iter = plugins_.find(pluginName);
+        if(iter != plugins_.end())
+        {
+            auto& createPlugin = iter->second;
+            p.reset(createPlugin(this->policy_));
+        }
+
         return p;
     }
     
