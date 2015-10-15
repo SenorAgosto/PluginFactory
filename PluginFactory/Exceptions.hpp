@@ -7,10 +7,10 @@ namespace boost { namespace filesystem {
 
 namespace PluginFactory {
 
-    class PluginDirectoryDoesntExist : public std::runtime_error
+    class PluginPathDoesntExist : public std::runtime_error
     {
     public:
-        PluginDirectoryDoesntExist(const boost::filesystem::path& path);
+        PluginPathDoesntExist(const boost::filesystem::path& path);
     };
     
     class PluginPathIsntDirectory : public std::runtime_error

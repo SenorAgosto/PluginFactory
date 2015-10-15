@@ -3,8 +3,8 @@
 
 namespace PluginFactory {
 
-    PluginDirectoryDoesntExist::PluginDirectoryDoesntExist(const boost::filesystem::path& path)
-        : std::runtime_error("Plugin Directory '" + path.string() + "' does not exist")
+    PluginPathDoesntExist::PluginPathDoesntExist(const boost::filesystem::path& path)
+        : std::runtime_error("Plugin Path '" + path.string() + "' does not exist")
     {
     }
     
