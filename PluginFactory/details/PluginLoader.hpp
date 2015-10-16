@@ -16,5 +16,5 @@
 
 namespace PluginFactory { namespace details {
     
-    using PluginLoader = PluginLoaderImpl<build_traits::platform>;
+    using PluginLoader = PluginLoaderImpl<build_traits::platform()>;
 }}
