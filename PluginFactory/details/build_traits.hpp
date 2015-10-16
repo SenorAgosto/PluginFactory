@@ -6,10 +6,20 @@
 struct build_traits
 {
     enum class Platform {
-          macosx
+          linux
+        , macosx
         , windows
-        , posix
     };
     
-    static const Platform platform = BUILD_TRAITS_PLATFORM;
+    constexpr static Platform platform()
+    {
+        return BUILD_TRAITS_PLATFORM;
+    }
+    
+    constexpr static bool is_posix()
+    {
+        return
+            (platform() == Platform::linux) ||
+            (platform() == Platform::macosx);
+    }
 };
