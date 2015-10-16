@@ -38,5 +38,5 @@ namespace PluginFactory { namespace details {
     {
     };
     
-    using PluginExtensionHelper = PluginExtensionHelperImpl<build_traits::platform>;
+    using PluginExtensionHelper = PluginExtensionHelperImpl<build_traits::platform()>;
 }}
