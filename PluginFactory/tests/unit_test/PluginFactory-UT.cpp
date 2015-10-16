@@ -40,6 +40,11 @@ namespace {
         CHECK_THROW(PluginFactory::PluginFactory<PluginInterface> factory("./cmake_install.cmake"), PluginFactory::PluginPathIsntDirectory);
     }
     
+    TEST(verifyPluginFactoryConstructionWithArguments)
+    {
+        PluginFactory::PluginFactory<PluginInterface> factory("./", 1, "abc", 0.0f);
+    }
+    
     TEST_FIXTURE(PluginFactoryFixture, verifyLoad)
     {
         auto plugins = factory.availablePlugins();
@@ -52,10 +57,19 @@ namespace {
     // ensure the class template methods are instantiated.
     //
     
+    TEST_FIXTURE(PluginFactoryFixture, callLoad)
+    {
+        factory.load();
+    }
     
     TEST_FIXTURE(PluginFactoryFixture, callLoadWithPath)
     {
         factory.load("path/to/plugin");
+    }
+    
+    TEST_FIXTURE(PluginFactoryFixture, callUnload)
+    {
+        factory.unload();
     }
     
     TEST_FIXTURE(PluginFactoryFixture, callUnloadWithPath)
