@@ -111,10 +111,9 @@ namespace PluginFactory {
             auto pluginHandle = loader.getPluginHandle<PluginInterface, PluginServiceInterface>();
             plugins_.emplace(pluginPath.string(), pluginHandle);
         }
-        // TODO: make this exception more specific, we don't want to catch all of
-        // e
-        catch(const std::exception& e)
+        catch(const PluginLoaderValidationException& )
         {
+            // ... eat the exception
         }
     }
     
