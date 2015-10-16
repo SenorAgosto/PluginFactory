@@ -17,7 +17,8 @@
 
 namespace PluginFactory {
 
-    // A tag type to indicate we want to create a shared_ptr to
+    // A tag type to indicate we want to create a std::shared_ptr of the plugin
+    // rather than std::unique_ptr
     struct AsSharedTagType {};
     
     
