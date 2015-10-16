@@ -1,5 +1,6 @@
 #pragma once
 #include <PluginFactory/details/NullPluginService.hpp>
+#include <PluginFactory/details/PluginExtensionHelper.hpp>
 #include <PluginFactory/details/PluginHandle.hpp>
 #include <PluginFactory/details/PolicyHolder.hpp>
 #include <PluginFactory/details/PluginLoader.hpp>
@@ -88,8 +89,11 @@ namespace PluginFactory {
     {
         for(boost::filesystem::directory_iterator iter(pluginDirectory_), end; iter != end; ++iter)
         {
-            // TODO: check each regular file's extension to see if it is the correct
-            // extension for a shared lib on this platform.
+            const auto& path = iter->path();
+            if(path.extension().string() == details::PluginExtensionHelper::extension())
+            {
+                load(path);
+            }
         }
     }
     
