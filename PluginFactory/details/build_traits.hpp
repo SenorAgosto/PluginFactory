@@ -1,5 +1,6 @@
 #pragma once 
 
+// TODO: implement header to determine the platform
 #define BUILD_TRAITS_PLATFORM Platform::macosx
 
 struct build_traits
