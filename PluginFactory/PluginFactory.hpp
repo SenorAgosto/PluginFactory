@@ -90,6 +90,12 @@ namespace PluginFactory {
         for(boost::filesystem::directory_iterator iter(pluginDirectory_), end; iter != end; ++iter)
         {
             const auto& path = iter->path();
+            
+            if(boost::filesystem::is_directory(path))
+            {
+                continue;
+            }
+            
             if(path.extension().string() == details::PluginExtensionHelper::extension())
             {
                 load(path);
