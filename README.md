@@ -1,7 +1,29 @@
 # PluginFactory
 
-A small toolkit for adding plugins to C++ applications. 
+A small interface-driven toolkit for adding plugins to C++ applications. 
 
+### Quick Tour
+
+    PluginFactory::PluginFactory<MyPluginInterface, MyAppInterface> factory("plugins/");
+
+    using MyPlugin = PluginHandle<MyPluginIntarfec, MyAppInterface>;
+    std::deque<MyPlugin> plugins;
+
+    // list all available plugins
+    auto availablePlugins = factory.availablePlugins();
+
+    // instantiate all available plugins
+    for(const auto& pluginName : availablePlugins)
+    {
+    	plugins.emplace_back(factory.instance(pluginName));
+    }
+
+    // invoke MyPluginInterface::foo() on all loaded plugins
+    for(auto& plugin : plugins)
+    {
+    	plugin->foo();
+    }
+    
 ### Dependencies 
 
 - c++11
