@@ -2,5 +2,13 @@
 
 namespace PluginFactory { namespace details {
 
-    class NullPluginService {};
+    class NullPluginService
+    {
+    public:
+        
+        template<typename... Args>
+        NullPluginService(Args&&... /*ignored*/)
+        {
+        }
+    };
 }}
