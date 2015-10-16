@@ -18,4 +18,10 @@ namespace PluginFactory {
     public:
         PluginPathIsntDirectory(const boost::filesystem::path& path);
     };
+    
+    class PluginLoaderValidationException : public std::runtime_error
+    {
+    public:
+        PluginLoaderValidationException(const std::string& message);
+    };
 }

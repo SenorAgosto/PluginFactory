@@ -12,4 +12,9 @@ namespace PluginFactory {
         : std::runtime_error("Plugin Path '" + path.string() + "' isn't directory")
     {
     }
+    
+    PluginLoaderValidationException::PluginLoaderValidationException(const std::string& message)
+        : std::runtime_error(message)
+    {
+    }
 }
