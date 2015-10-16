@@ -40,7 +40,7 @@ namespace PluginFactory {
         
         // @pluginDirectory is the directory path to load plugins from.
         template<typename... Args>
-        PluginFactory(const boost::filesystem::path& pluginDirectory, Args&&... args);
+        PluginFactory(const boost::filesystem::path& pluginDirectory, Args&&... pluginServiceArguments);
         
         void load();        // load all found plugins
         void load(const boost::filesystem::path& pluginPath);   // load a specific plugin (@pluginPath)
@@ -68,8 +68,8 @@ namespace PluginFactory {
     
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
     template<typename... Args>
-    PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::PluginFactory(const boost::filesystem::path& pluginDirectory, Args&&... args)
-        : details::PolicyHolder<PluginServiceInterface, PolicyOwnershipProperty>(std::forward<Args>(args)...)
+    PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::PluginFactory(const boost::filesystem::path& pluginDirectory, Args&&... pluginServiceArguments)
+        : details::PolicyHolder<PluginServiceInterface, PolicyOwnershipProperty>(std::forward<Args>(pluginServiceArguments)...)
         , pluginDirectory_(pluginDirectory)
     {
         if(!boost::filesystem::exists(pluginDirectory_))
