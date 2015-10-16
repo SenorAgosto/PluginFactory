@@ -13,8 +13,13 @@ namespace PluginFactory {
     {
     }
     
-    PluginLoaderValidationException::PluginLoaderValidationException(const std::string& message)
-        : std::runtime_error(message)
+    PluginLoaderException::PluginLoaderException(const boost::filesystem::path& path, const std::string& message)
+        : std::runtime_error("Plugin (" + path.string() + ") failed to load : " + message)
+    {
+    }
+
+    PluginLoaderValidationException::PluginLoaderValidationException(const boost::filesystem::path& path, const std::string& message)
+        : PluginLoaderException(path, message)
     {
     }
 }
