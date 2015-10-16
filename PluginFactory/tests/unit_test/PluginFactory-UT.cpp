@@ -62,9 +62,10 @@ namespace {
         factory.load();
     }
     
-    TEST_FIXTURE(PluginFactoryFixture, callLoadWithPath)
+    TEST(callLoadWithPath)
     {
-        factory.load("path/to/plugin");
+        PluginFactory::PluginFactory<PluginInterface> factory(".");
+        CHECK_THROW(factory.load("path/to/plugin"), PluginFactory::PluginLoaderException);
     }
     
     TEST_FIXTURE(PluginFactoryFixture, callUnload)
