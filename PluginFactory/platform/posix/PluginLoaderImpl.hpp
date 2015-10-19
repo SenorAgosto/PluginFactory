@@ -30,7 +30,7 @@ namespace PluginFactory { namespace details {
         }
         
     private:
-        std::unique_ptr<void, DlCloser> libraryHandle_;
+        LibraryHandle libraryHandle_;
     };
     
     

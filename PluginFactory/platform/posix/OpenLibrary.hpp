@@ -12,5 +12,6 @@ namespace PluginFactory { namespace details {
         void operator()(void* library);
     };
 
-    std::unique_ptr<void, DlCloser> openLibrary(const boost::filesystem::path& plugin);
+    using LibraryHandle = std::unique_ptr<void, DlCloser>;
+    LibraryHandle openLibrary(const boost::filesystem::path& plugin);
 }}
