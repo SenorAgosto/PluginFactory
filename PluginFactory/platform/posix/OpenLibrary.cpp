@@ -14,10 +14,9 @@ namespace PluginFactory { namespace details {
         }
     }
     
-    std::unique_ptr<void, DlCloser> openLibrary(const boost::filesystem::path& plugin)
+    LibraryHandle openLibrary(const boost::filesystem::path& plugin)
     {
-        std::unique_ptr<void, DlCloser> lib(
-            dlopen(plugin.string().c_str(), RTLD_NOW | RTLD_LOCAL), DlCloser());
+        LibraryHandle lib(dlopen(plugin.string().c_str(), RTLD_NOW | RTLD_LOCAL), DlCloser());
         
         if(!lib)
         {
