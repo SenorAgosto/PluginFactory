@@ -30,5 +30,10 @@ namespace PluginFactory {
     public:
         PluginLoaderValidationException(const boost::filesystem::path& path, const std::string& message);
     };
-    
+ 
+    class PluginCreationMethodNotFoundInPluginCode : public PluginLoaderException
+    {
+    public:
+        PluginCreationMethodNotFoundInPluginCode(const boost::filesystem::path& path);
+    };
 }
