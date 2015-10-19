@@ -17,3 +17,9 @@ file(GLOB load_plugins_src
 add_executable(load_plugins ${load_plugins_src})
 add_dependencies(PluginFactory plugin_foo plugin_bar) 
 target_link_libraries(load_plugins PluginFactory ${Boost_LIBRARIES})
+
+if(POSIX)
+    set_property(TARGET plugin_foo PROPERTY COMPILE_FLAGS --export-dynamic)
+    set_property(TARGET plugin_bar PROPERTY COMPILE_FLAGS --export-dynamic)
+endif()
+
