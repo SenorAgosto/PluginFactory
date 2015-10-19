@@ -53,3 +53,4 @@ Austin Gilbert <ceretullis@gmail.com>
 - plexx
 - [CPF](http://sourceforge.net/projects/cpp-plugin/)
 - [3xc](https://github.com/rhcad/x3c)
+- Qt provides plugin capabilities as well
