@@ -66,6 +66,9 @@ namespace PluginFactory {
         std::string serviceVersion_;
     };
     
+    template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
+    AsSharedTagType PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::create_shared;
+    
     
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
     template<typename... Args>
