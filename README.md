@@ -4,6 +4,8 @@ A small interface-driven toolkit for adding plugins to C++ applications.
 
 ### Quick Tour
 
+The following code snippet shows how to use the PluginFactory.
+
     PluginFactory::PluginFactory<MyPluginInterface, MyAppInterface> factory("plugins/");
     
     factory.load();
@@ -27,6 +29,9 @@ A small interface-driven toolkit for adding plugins to C++ applications.
     	plugin->foo();
     }
 
+#### Creating a plugin
+
+    // TODO: implement a small example demonstrating how to implement a plugin. 
 
 NOTE: generally speaking it is good advice that memory shouldn't pass a process/shared-lib
 boundary because they may have been compiled with different allocators.
@@ -35,6 +40,16 @@ We're going to ignore that advice and instead REQUIRE the plugins to be compiled
 with the same settings as the main process. It greatly simplifies working with
 the shared libs at the expense of being less flexible. Because of this choice, plugins
 compiled with different versions of compiler tool chains may fail to load. 
+
+#### Compiling your plugin on POSIX 
+
+On POSIX systems, you'll most likely have to supply linker arguments to get the symbols in your shared library exported. (e.g. GCC on Linux and clang on Mac support the --export-dynamic to export symbols.)
+
+#### Compiling your plugin on Windows 
+
+On Windows, you'll need to use a compiler intrinsic attribute to indicate which symbols you want exported. 
+
+    __declspec(dllexport) MyPlugin* createPlugin(PluginServiceInterface&);
 
 ### Dependencies 
 
