@@ -1,6 +1,6 @@
 #pragma once 
 #include <PluginFactory/details/build_traits.hpp>
-#include <PluginFactory/details/PluginHandle.hpp>
+#include <PluginFactory/details/PluginCreatorHandle.hpp>
 #include <PluginFactory/details/PluginLoaderImpl.hpp>
 
 #include <PluginFactory/platform/posix/OpenLibrary.hpp>
@@ -24,9 +24,9 @@ namespace PluginFactory { namespace details {
         void validatePluginServiceVersion(const std::string& /*serviceVersion*/){}
         
         template<class PluginInterface, class PluginServiceInterface>
-        PluginHandle<PluginInterface, PluginServiceInterface> getPluginHandle()
+        PluginCreatorHandle<PluginInterface, PluginServiceInterface> getPluginCreatorHandle()
         {
-            return PluginHandle<PluginInterface, PluginServiceInterface>();
+            return PluginCreatorHandle<PluginInterface, PluginServiceInterface>();
         }
         
     private:
