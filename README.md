@@ -26,7 +26,16 @@ A small interface-driven toolkit for adding plugins to C++ applications.
     {
     	plugin->foo();
     }
-    
+
+
+NOTE: generally speaking it is good advice that memory shouldn't pass a process/shared-lib
+boundary because they may have been compiled with different allocators.
+
+We're going to ignore that advice and instead REQUIRE the plugins to be compiled
+with the same settings as the main process. It greatly simplifies working with
+the shared libs at the expense of being less flexible. Because of this choice, plugins
+compiled with different versions of compiler tool chains may fail to load. 
+
 ### Dependencies 
 
 - c++11
