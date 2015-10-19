@@ -1,5 +1,7 @@
 # TODO
 
+- PolicyIsInternal/PolicyIsExternal really should be in details. 
+
 - implement framework for loading and instantiating c++ plugins. 
 - implement abstract factory over DLLs
 	- each DLL encapsulates a plugin interface
