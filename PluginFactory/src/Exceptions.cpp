@@ -22,4 +22,9 @@ namespace PluginFactory {
         : PluginLoaderException(path, message)
     {
     }
+    
+    PluginCreationMethodNotFoundInPluginCode::PluginCreationMethodNotFoundInPluginCode(const boost::filesystem::path& path)
+        : PluginLoaderException(path, "Symbol 'createPlugin' not found in plugin library")
+    {
+    }
 }
