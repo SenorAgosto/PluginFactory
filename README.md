@@ -8,7 +8,8 @@ A small interface-driven toolkit for adding plugins to C++ applications.
     
     factory.load();
 
-    using MyPlugin = PluginFactory::PluginHandle<MyPluginIntarfec, MyAppInterface>;
+    // store for instantiated plugins
+    using MyPlugin = std::unique_ptr<MyPluginInterface>;
     std::deque<MyPlugin> plugins;
 
     // list all available plugins
