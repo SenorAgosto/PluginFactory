@@ -118,7 +118,7 @@ namespace PluginFactory {
             loader.validatePluginServiceVersion(serviceVersion_);
             
             auto pluginHandle = loader.getPluginHandle<PluginInterface, PluginServiceInterface>();
-            plugins_.emplace(pluginPath.string(), pluginHandle);
+            plugins_.emplace(pluginPath.string(), std::move(pluginHandle));
         }
         catch(const PluginLoaderValidationException& )
         {
