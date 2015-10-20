@@ -1,5 +1,5 @@
 #pragma once 
-#include <PluginFactory/platform/posix/OpenLibrary.hpp>
+#include <PluginFactory/platform/posix/LibraryHandle.hpp>
 
 namespace PluginFactory { namespace platform { namespace posix {
 
@@ -8,7 +8,6 @@ namespace PluginFactory { namespace platform { namespace posix {
     {
     public:
         using CreatePluginMethod = void* (*)(void*);
-        
         PosixPluginHandle(LibraryHandle libraryHandle, void* symbolAddress);
         
         // invoke the createPlugin method contained in the plugin,

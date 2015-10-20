@@ -2,7 +2,7 @@
 #include <PluginFactory/Exceptions.hpp>
 
 #include <PluginFactory/details/PluginHandle.hpp>
-#include <PluginFactory/platform/posix/OpenLibrary.hpp>
+#include <PluginFactory/platform/posix/LibraryHandle.hpp>
 
 #include <boost/filesystem/path.hpp>
 #include <dlfcn.h>

@@ -1,4 +1,4 @@
-#include <PluginFactory/platform/posix/OpenLibrary.hpp>
+#include <PluginFactory/platform/posix/LibraryHandle.hpp>
 #include <PluginFactory/Exceptions.hpp>
 
 #include <boost/filesystem/path.hpp>
@@ -14,15 +14,17 @@ namespace PluginFactory { namespace platform { namespace posix {
         }
     }
     
-    LibraryHandle openLibrary(const boost::filesystem::path& plugin)
+    LibraryHandle::LibraryHandle(const boost::filesystem::path& plugin)
+        : lib_(dlopen(plugin.string().c_str(), RTLD_NOW | RTLD_LOCAL), DlCloser())
     {
-        LibraryHandle lib(dlopen(plugin.string().c_str(), RTLD_NOW | RTLD_LOCAL), DlCloser());
-        
-        if(!lib)
+        if(!lib_)
         {
             throw PluginLoaderException(plugin, dlerror());
         }
-        
-        return lib;
+    }
+
+    void* LibraryHandle::get()
+    {
+        return lib_.get();
     }
 }}}
