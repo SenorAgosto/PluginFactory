@@ -1,6 +1,7 @@
 #include <load_plugins/PluginInterface.hpp>
 #include <load_plugins/PluginServiceInterface.hpp>
 
+#include <PluginFactory/MakeCreatePluginMethod.hpp>
 #include <iostream>
 
 namespace bar {
@@ -10,30 +11,21 @@ namespace bar {
     class BarPlugin : public load_plugins::MyPlugin
     {
     public:
-        BarPlugin(load_plugins::PluginServiceInterface& service)
-            : service_(service)
+        BarPlugin(void* service)
+            : service_(static_cast<load_plugins::PluginServiceInterface*>(service))
         {
         }
         
         void do_stuff() override
         {
-            std::cout << "bar" << std::endl;
-            service_.barCalled();
+            std::cout << "foo" << std::endl;
+            service_->barCalled();
         }
         
     private:
-        load_plugins::PluginServiceInterface& service_;
+        load_plugins::PluginServiceInterface * const service_;
     };
     
 }
 
-// NOTE: generally speaking it is good advice that memory shouldn't pass the process/shared-lib
-// boundary because they may have been compiled with different allocators.
-//
-// We're going to ignore that advice and instead REQUIRE the plugins to be compiled
-// with the same settings as the main process. It greatly simplifies working with
-// the shared libs.
-load_plugins::MyPlugin* createPlugin(load_plugins::PluginServiceInterface& service)
-{
-    return new bar::BarPlugin(service);
-}
+MAKE_PLUGIN_CREATION_METHOD(bar::BarPlugin)
