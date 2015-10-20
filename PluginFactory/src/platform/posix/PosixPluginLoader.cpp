@@ -1,10 +1,9 @@
 #include <PluginFactory/platform/posix/PosixPluginLoader.hpp>
-#include <PluginFactory/platform/posix/OpenLibrary.hpp>
 
 namespace PluginFactory { namespace platform { namespace posix {
 
     PosixPluginLoader::PosixPluginLoader(const boost::filesystem::path& plugin)
-        : libraryHandle_(openLibrary(plugin))
+        : libraryHandle_(plugin)
         , path_(plugin)
     {
     }
