@@ -2,7 +2,7 @@
 #include <PluginFactory/Exceptions.hpp>
 
 #include <PluginFactory/details/build_traits.hpp>
-#include <PluginFactory/details/PluginCreatorHandle.hpp>
+#include <PluginFactory/details/PluginHandle.hpp>
 #include <PluginFactory/details/PluginLoaderImpl.hpp>
 
 #include <PluginFactory/platform/posix/OpenLibrary.hpp>
@@ -35,7 +35,7 @@ namespace PluginFactory { namespace details {
                 throw PluginCreationMethodNotFoundInPluginCode(path_);
             }
             
-            return PluginCreatorHandle<PluginInterface, PluginServiceInterface>();
+            return PluginHandle<PluginInterface, PluginServiceInterface>(std::move(libraryHandle_), symbolAddress);
         }
         
     private:
