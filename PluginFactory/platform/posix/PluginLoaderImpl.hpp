@@ -1,4 +1,6 @@
 #pragma once 
+#include <PluginFactory/Exceptions.hpp>
+
 #include <PluginFactory/details/build_traits.hpp>
 #include <PluginFactory/details/PluginCreatorHandle.hpp>
 #include <PluginFactory/details/PluginLoaderImpl.hpp>
@@ -16,6 +18,7 @@ namespace PluginFactory { namespace details {
     public:
         PosixPluginLoader(const boost::filesystem::path& plugin)
             : libraryHandle_(openLibrary(plugin))
+            , path_(plugin)
         {
         }
 
@@ -26,11 +29,18 @@ namespace PluginFactory { namespace details {
         template<class PluginInterface, class PluginServiceInterface>
         PluginCreatorHandle<PluginInterface, PluginServiceInterface> getPluginCreatorHandle()
         {
+            void* symbolAddress = dlsym(libraryHandle_.get(), "createPlugin");
+            if(symbolAddress == nullptr)
+            {
+                throw PluginCreationMethodNotFoundInPluginCode(path_);
+            }
+            
             return PluginCreatorHandle<PluginInterface, PluginServiceInterface>();
         }
         
     private:
         LibraryHandle libraryHandle_;
+        const boost::filesystem::path path_;
     };
     
     
