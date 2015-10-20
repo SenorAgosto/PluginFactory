@@ -19,7 +19,8 @@ namespace load_plugins {
         
         void report() override
         {
-            std::cout << barCalled_ << " " << fooCalled_ << std::endl;
+            std::cout << "Bar Called: " << barCalled_ << "\n"
+                << "Foo Called: " << fooCalled_ << std::endl;
         }
             
     private:
