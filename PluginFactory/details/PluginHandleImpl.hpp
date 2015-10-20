@@ -8,10 +8,9 @@ namespace PluginFactory {
     // The purpose of the PluginHandle is to wrap the plugin instantiation
     // method & hold the OS supplied shared lib handle.
     template<class PluginInterface, class PluginServiceInterface>
-    struct PluginHandle
+    struct PluginHandleImpl
     {
-        PluginHandle(LibraryHandle libHandle, void* symbolAddress){}
-        ~PluginHandle(){}
+        PluginHandleImpl(LibraryHandle libHandle, void* symbolAddress){}
         
         PluginInterface* operator()(PluginServiceInterface&)
         {
