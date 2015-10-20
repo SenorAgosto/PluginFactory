@@ -24,8 +24,8 @@ namespace PluginFactory { namespace platform { namespace posix {
     
     template<class PluginInterface, class PluginServiceInterface>
     PosixPluginHandle<PluginInterface, PluginServiceInterface>::PosixPluginHandle(LibraryHandle libraryHandle, void* symbolAddress)
-        : libraryHandle_(std::move(libraryHandle))
-        , createPlugin_(reinterpret_cast<CreatePluginMethod>(symbolAddress))
+        : createPlugin_(reinterpret_cast<CreatePluginMethod>(symbolAddress))
+        , libraryHandle_(std::move(libraryHandle))
     {
     }
     
