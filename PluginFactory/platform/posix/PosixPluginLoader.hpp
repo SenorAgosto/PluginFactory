@@ -20,7 +20,7 @@ namespace PluginFactory { namespace platform { namespace posix {
         void validatePluginServiceVersion(const std::string& /*serviceVersion*/);
         
         template<class PluginInterface, class PluginServiceInterface>
-        details::PluginHandle<PluginInterface, PluginServiceInterface> getPluginCreatorHandle();
+        details::PluginHandle<PluginInterface, PluginServiceInterface> getPluginHandle();
         
     private:
         LibraryHandle libraryHandle_;
@@ -29,7 +29,7 @@ namespace PluginFactory { namespace platform { namespace posix {
 
 
     template<class PluginInterface, class PluginServiceInterface>
-    details::PluginHandle<PluginInterface, PluginServiceInterface> PosixPluginLoader::getPluginCreatorHandle()
+    details::PluginHandle<PluginInterface, PluginServiceInterface> PosixPluginLoader::getPluginHandle()
     {
         void* symbolAddress = dlsym(libraryHandle_.get(), "createPlugin");
         if(symbolAddress == nullptr)

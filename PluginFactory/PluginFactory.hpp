@@ -117,7 +117,7 @@ namespace PluginFactory {
             loader.validatePluginVersion(pluginVersion_);
             loader.validatePluginServiceVersion(serviceVersion_);
             
-            auto pluginHandle = loader.getPluginCreatorHandle<PluginInterface, PluginServiceInterface>();
+            auto pluginHandle = loader.getPluginHandle<PluginInterface, PluginServiceInterface>();
             plugins_.emplace(pluginPath.string(), pluginHandle);
         }
         catch(const PluginLoaderValidationException& )
