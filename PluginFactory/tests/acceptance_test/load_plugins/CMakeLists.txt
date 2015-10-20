@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 2.8)
 Project("load_plugins")
 
+# suppress warnings about not setting rpath
+if(APPLE)
+  if(UNIX)
+    cmake_policy(SET CMP0042 OLD)
+  endif()
+endif() 
+
 include_directories(".")
 
 # create two shared libs
