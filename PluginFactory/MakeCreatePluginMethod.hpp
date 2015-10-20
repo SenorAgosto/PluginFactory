@@ -9,4 +9,10 @@ extern "C" { \
     { \
         return new ConcretePluginImpl(service); \
     } \
+\
+\
+    void deletePlugin(void* plugin) \
+    { \
+        delete plugin; \
+    } \
 }\
