@@ -5,7 +5,7 @@ namespace boost { namespace filesystem {
     class path;
 }}
 
-namespace PluginFactory { namespace details {
+namespace PluginFactory { namespace platform { namespace posix {
 
     struct DlCloser
     {
@@ -14,4 +14,4 @@ namespace PluginFactory { namespace details {
 
     using LibraryHandle = std::unique_ptr<void, DlCloser>;
     LibraryHandle openLibrary(const boost::filesystem::path& plugin);
-}}
+}}}

@@ -4,7 +4,7 @@
 #include <boost/filesystem/path.hpp>
 #include <dlfcn.h>
 
-namespace PluginFactory { namespace details {
+namespace PluginFactory { namespace platform { namespace posix {
 
     void DlCloser::operator()(void* library)
     {
@@ -25,4 +25,4 @@ namespace PluginFactory { namespace details {
         
         return lib;
     }
-}}
+}}}
