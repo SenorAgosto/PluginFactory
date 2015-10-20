@@ -1,5 +1,6 @@
 # TODO
 
+- change namespace of classes in platform/posix to match folder layout.
 - PolicyIsInternal/PolicyIsExternal really should be in details. 
 
 - implement framework for loading and instantiating c++ plugins. 
