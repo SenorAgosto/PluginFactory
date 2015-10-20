@@ -6,6 +6,7 @@
 #include <PluginFactory/details/PluginLoaderImpl.hpp>
 
 #include <PluginFactory/platform/posix/OpenLibrary.hpp>
+#include <PluginFactory/platform/posix/PosixPluginLoader.hpp>
 
 #include <boost/filesystem/path.hpp>
 #include <string>
@@ -13,49 +14,18 @@
 
 namespace PluginFactory { namespace details {
     
-    class PosixPluginLoader
-    {
-    public:
-        PosixPluginLoader(const boost::filesystem::path& plugin)
-            : libraryHandle_(openLibrary(plugin))
-            , path_(plugin)
-        {
-        }
-
-        void validateCompiler(const std::string& /*compilerToken*/){}
-        void validatePluginVersion(const std::string& /*pluginVersion*/){}
-        void validatePluginServiceVersion(const std::string& /*serviceVersion*/){}
-        
-        template<class PluginInterface, class PluginServiceInterface>
-        PluginCreatorHandle<PluginInterface, PluginServiceInterface> getPluginCreatorHandle()
-        {
-            void* symbolAddress = dlsym(libraryHandle_.get(), "createPlugin");
-            if(symbolAddress == nullptr)
-            {
-                throw PluginCreationMethodNotFoundInPluginCode(path_);
-            }
-            
-            return PluginHandle<PluginInterface, PluginServiceInterface>(std::move(libraryHandle_), symbolAddress);
-        }
-        
-    private:
-        LibraryHandle libraryHandle_;
-        const boost::filesystem::path path_;
-    };
-    
-    
     // Mac OS X specialization
     template<>
-    struct PluginLoaderImpl<build_traits::Platform::macosx> : public PosixPluginLoader
+    struct PluginLoaderImpl<build_traits::Platform::macosx> : public platform::posix::PosixPluginLoader
     {
-        using PosixPluginLoader::PosixPluginLoader;
+        using platform::posix::PosixPluginLoader::PosixPluginLoader;
     };
     
     // Linux specialization
     template<>
-    struct PluginLoaderImpl<build_traits::Platform::linux> : public PosixPluginLoader
+    struct PluginLoaderImpl<build_traits::Platform::linux> : public platform::posix::PosixPluginLoader
     {
-        using PosixPluginLoader::PosixPluginLoader;
+        using platform::posix::PosixPluginLoader::PosixPluginLoader;
     };
     
     // BSD... etc.
