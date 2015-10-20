@@ -18,7 +18,7 @@ namespace bar {
         
         void do_stuff() override
         {
-            std::cout << "foo" << std::endl;
+            std::cout << "bar" << std::endl;
             service_->barCalled();
         }
         
