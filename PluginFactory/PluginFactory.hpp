@@ -1,7 +1,7 @@
 #pragma once
 #include <PluginFactory/details/NullPluginService.hpp>
 #include <PluginFactory/details/PluginExtensionHelper.hpp>
-#include <PluginFactory/details/PluginCreatorHandle.hpp>
+#include <PluginFactory/details/PluginHandle.hpp>
 #include <PluginFactory/details/PolicyHolder.hpp>
 #include <PluginFactory/details/PluginLoader.hpp>
 #include <PluginFactory/details/PolicyProperties.hpp>
@@ -57,7 +57,7 @@ namespace PluginFactory {
     private:
         using PluginPath = std::string;
         using PluginInstanceMethod = std::function<PluginInterface* (PluginServiceInterface&)>;
-        std::unordered_map<PluginPath, PluginCreatorHandle<PluginInterface, PluginServiceInterface>> plugins_;
+        std::unordered_map<PluginPath, PluginHandle<PluginInterface, PluginServiceInterface>> plugins_;
         
         boost::filesystem::path pluginDirectory_;
         
