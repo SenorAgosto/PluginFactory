@@ -1,7 +1,7 @@
 #include <load_plugins/PluginInterface.hpp>
 #include <load_plugins/PluginServiceInterface.hpp>
 
-#include <PluginFactory/MakeCreatePluginMethod.hpp>
+#include <PluginFactory/MakePluginMethods.hpp>
 #include <iostream>
 
 namespace bar {
