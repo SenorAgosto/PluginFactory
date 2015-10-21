@@ -31,13 +31,19 @@ namespace PluginFactory { namespace platform { namespace posix {
     template<class PluginInterface, class PluginServiceInterface>
     details::PluginHandle<PluginInterface, PluginServiceInterface> PosixPluginLoader::getPluginHandle()
     {
-        void* symbolAddress = dlsym(libraryHandle_.get(), "createPlugin");
-        if(symbolAddress == nullptr)
+        void* createPluginAddress = dlsym(libraryHandle_.get(), "createPlugin");
+        if(createPluginAddress == nullptr)
         {
             throw PluginCreationMethodNotFoundInPluginCode(path_);
         }
         
-        return details::PluginHandle<PluginInterface, PluginServiceInterface>(std::move(libraryHandle_), symbolAddress);
+        void* deletePluginAddress = dlsym(libraryHandle_.get(), "deletePlugin");
+        if(deletePluginAddress == nullptr)
+        {
+            throw PluginDeletionMethodNotFoundInPluginCode(path_);
+        }
+        
+        return details::PluginHandle<PluginInterface, PluginServiceInterface>(std::move(libraryHandle_), createPluginAddress, deletePluginAddress);
     }
 
 }}}
