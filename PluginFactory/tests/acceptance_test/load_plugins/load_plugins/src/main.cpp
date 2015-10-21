@@ -9,7 +9,7 @@
 #include <iostream>
 #include <memory> 
 
-using MyPlugin = std::unique_ptr<load_plugins::MyPlugin>;
+using MyPlugin = std::unique_ptr<load_plugins::MyPlugin, PluginFactory::PluginDeleter<load_plugins::MyPlugin>>;
 using MyPluginFactory = PluginFactory::PluginFactory<load_plugins::MyPlugin, load_plugins::PluginServiceInterface, PluginFactory::details::PolicyIsExternal>;
 
 int usage(char const * const programName);
