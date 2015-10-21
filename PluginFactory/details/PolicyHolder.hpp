@@ -1,5 +1,5 @@
 #pragma once 
-#include <PluginFactory/details/PolicyProperties.hpp>
+#include <PluginFactory/PolicyProperties.hpp>
 #include <utility>
 
 namespace PluginFactory { namespace details {
