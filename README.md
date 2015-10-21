@@ -10,8 +10,10 @@ The following code snippet shows how to use the PluginFactory.
     
     factory.load();
 
-    // store for instantiated plugins
-    using MyPlugin = std::unique_ptr<MyPluginInterface>;
+    // store for instantiated plugin pointers,
+    // the ownership of the pointers resides with 
+    // the shared library, not the parent process.
+    using MyPlugin = MyPluginInterface*;
     std::deque<MyPlugin> plugins;
 
     // list all available plugins
@@ -20,7 +22,7 @@ The following code snippet shows how to use the PluginFactory.
     // instantiate all available plugins
     for(const auto& pluginName : availablePlugins)
     {
-    	plugins.emplace_back(factory.instance(pluginName));
+    	plugins.push_back(factory.instance(pluginName));
     }
 
     // invoke MyPluginInterface::foo() on all loaded plugins
