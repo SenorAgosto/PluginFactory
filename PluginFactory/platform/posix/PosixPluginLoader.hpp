@@ -37,13 +37,7 @@ namespace PluginFactory { namespace platform { namespace posix {
             throw PluginCreationMethodNotFoundInPluginCode(path_);
         }
         
-        void* deletePluginAddress = dlsym(libraryHandle_.get(), "deletePlugin");
-        if(deletePluginAddress == nullptr)
-        {
-            throw PluginDeletionMethodNotFoundInPluginCode(path_);
-        }
-        
-        return details::PluginHandle<PluginInterface, PluginServiceInterface>(std::move(libraryHandle_), createPluginAddress, deletePluginAddress);
+        return details::PluginHandle<PluginInterface, PluginServiceInterface>(std::move(libraryHandle_), createPluginAddress);
     }
 
 }}}
