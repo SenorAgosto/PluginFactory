@@ -1,5 +1,5 @@
 #include <PluginFactory/PluginFactory.hpp>
-#include <PluginFactory/details/PolicyProperties.hpp>
+#include <PluginFactory/PolicyProperties.hpp>
 
 #include <load_plugins/PluginInterface.hpp>
 #include <load_plugins/PluginServiceInterface.hpp>
@@ -10,7 +10,7 @@
 #include <memory> 
 
 using MyPlugin = load_plugins::MyPlugin*;
-using MyPluginFactory = PluginFactory::PluginFactory<load_plugins::MyPlugin, load_plugins::PluginServiceInterface, PluginFactory::details::PolicyIsExternal>;
+using MyPluginFactory = PluginFactory::PluginFactory<load_plugins::MyPlugin, load_plugins::PluginServiceInterface, PluginFactory::PolicyIsExternal>;
 
 int usage(char const * const programName);
 int run(int argc, char** argv);

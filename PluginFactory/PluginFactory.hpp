@@ -1,12 +1,12 @@
 #pragma once
 #include <PluginFactory/Exceptions.hpp>
+#include <PluginFactory/PolicyProperties.hpp>
 
 #include <PluginFactory/details/NullPluginService.hpp>
 #include <PluginFactory/details/PluginExtensionHelper.hpp>
 #include <PluginFactory/details/PluginHandle.hpp>
 #include <PluginFactory/details/PolicyHolder.hpp>
 #include <PluginFactory/details/PluginLoader.hpp>
-#include <PluginFactory/details/PolicyProperties.hpp>
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
@@ -29,7 +29,7 @@ namespace PluginFactory {
     // NOTE: lifetime management using plugins can be difficult. It is essential
     // the PluginFactory stays in scope longer than any instanced plugin. Failure
     // to do so will most likely end in the process crashing.
-    template<class PluginInterface, class PluginServiceInterface = details::NullPluginService, class PolicyOwnershipProperty = details::PolicyIsInternal>
+    template<class PluginInterface, class PluginServiceInterface = details::NullPluginService, class PolicyOwnershipProperty = PolicyIsInternal>
     class PluginFactory : public details::PolicyHolder<PluginServiceInterface, PolicyOwnershipProperty>
     {
     public:
