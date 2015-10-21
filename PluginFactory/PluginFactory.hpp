@@ -152,7 +152,7 @@ namespace PluginFactory {
         if(iter != plugins_.end())
         {
             auto& createPlugin = iter->second;
-            p.reset(createPlugin(this->policy_));
+            p = createPlugin(this->policy_);
         }
         
         return p;
@@ -167,7 +167,7 @@ namespace PluginFactory {
         if(iter != plugins_.end())
         {
             auto& createPlugin = iter->second;
-            p.reset(createPlugin(this->policy_));
+            p = createPlugin(this->policy_);
         }
 
         return p;
