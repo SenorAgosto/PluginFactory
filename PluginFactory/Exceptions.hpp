@@ -36,4 +36,10 @@ namespace PluginFactory {
     public:
         PluginCreationMethodNotFoundInPluginCode(const boost::filesystem::path& path);
     };
+    
+    class PluginDeletionMethodNotFoundInPluginCode : public PluginLoaderException
+    {
+    public:
+        PluginDeletionMethodNotFoundInPluginCode(const boost::filesystem::path& path);
+    };
 }
