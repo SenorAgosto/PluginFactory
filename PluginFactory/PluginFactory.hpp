@@ -1,5 +1,4 @@
 #pragma once
-#include <PluginFactory/PluginDeleter.hpp>
 #include <PluginFactory/Exceptions.hpp>
 
 #include <PluginFactory/details/NullPluginService.hpp>
@@ -20,11 +19,6 @@
 
 namespace PluginFactory {
 
-    // A tag type to indicate we want to create a std::shared_ptr of the plugin
-    // rather than std::unique_ptr
-    struct AsSharedTagType {};
-    
-    
     // <PluginInterface> is the abstract interface of the plugin object itself. You'll need
     // a PluginFactory for each different type of plugin you wish to support.
     //
@@ -39,8 +33,6 @@ namespace PluginFactory {
     class PluginFactory : public details::PolicyHolder<PluginServiceInterface, PolicyOwnershipProperty>
     {
     public:
-        static AsSharedTagType create_shared;
-        
         // @pluginDirectory is the directory path to load plugins from.
         template<typename... Args>
         PluginFactory(const boost::filesystem::path& pluginDirectory, Args&&... pluginServiceArguments);
@@ -51,8 +43,8 @@ namespace PluginFactory {
         void unload();      // unload all loaded plugins
         void unload(const boost::filesystem::path& pluginPath); // unload a specific plugin (@pluginPath)
         
-        std::unique_ptr<PluginInterface, PluginDeleter<PluginInterface>> instance(const std::string& plugin);
-        std::shared_ptr<PluginInterface> instance(const std::string& pluginName, AsSharedTagType /*create_shared*/);
+        // You do not own this memory. The shared library owns this memory.
+        PluginInterface* instance(const std::string& plugin);
         
         std::vector<std::string> availablePlugins() const;
         
@@ -66,10 +58,6 @@ namespace PluginFactory {
         std::string compilerToken_;
         std::string serviceVersion_;
     };
-
-    
-    template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
-    AsSharedTagType PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::create_shared;
 
     
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
@@ -146,33 +134,16 @@ namespace PluginFactory {
     }
 
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
-    std::unique_ptr<PluginInterface, PluginDeleter<PluginInterface>> PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::instance(const std::string& pluginName)
+    PluginInterface* PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::instance(const std::string& pluginName)
     {
-        std::unique_ptr<PluginInterface, PluginDeleter<PluginInterface>> p;
-        
         auto iter = plugins_.find(pluginName);
-        if(iter != plugins_.end())
+        if(iter == plugins_.end())
         {
-            auto& createPlugin = iter->second;
-            p = createPlugin(this->policy_);
+            throw PluginNotFoundException(pluginName);
         }
         
-        return p;
-    }
-    
-    template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
-    std::shared_ptr<PluginInterface> PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::instance(const std::string& pluginName, AsSharedTagType)
-    {
-        std::shared_ptr<PluginInterface> p;
-        
-        auto iter = plugins_.find(pluginName);
-        if(iter != plugins_.end())
-        {
-            auto& createPlugin = iter->second;
-            p = createPlugin(this->policy_);
-        }
-
-        return p;
+        auto& createPlugin = iter->second;
+        return createPlugin(this->policy_);
     }
     
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
