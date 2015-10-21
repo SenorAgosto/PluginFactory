@@ -1,6 +1,6 @@
 #pragma once 
 
-namespace PluginFactory { namespace details {
+namespace PluginFactory {
     
     // This tag type indicates the Policy lives outside,
     // and a reference to it is passed in on construction.
@@ -10,4 +10,4 @@ namespace PluginFactory { namespace details {
     // This is the preferred method for simple policies.
     struct PolicyIsInternal {};
 
-}}
+}
