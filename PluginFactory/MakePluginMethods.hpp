@@ -1,19 +1,12 @@
 #pragma once 
+#include <memory>
 
-// Use this helper macro to create a plugin creation method in your plugin implementation &
-// your base process. In the base process, the signature of the method will be used to lookup
-// the createPlugin() in the plugin shared library.
+// Use this helper macro to create a plugin creation method in your plugin implementation.
 #define MAKE_PLUGIN_METHODS(PluginInterface, ConcretePluginImpl) \
 extern "C" { \
     void* createPlugin(void* service) \
     { \
-        return new ConcretePluginImpl(service); \
+        static std::unique_ptr<PluginInterface> plugin_(new ConcretePluginImpl(service)); \
+        return plugin_.get(); \
     } \
-\
-\
-    void deletePlugin(void* plugin) \
-    { \
-        PluginInterface* p =  static_cast<PluginInterface*>(plugin); \
-        delete p; \
-    } \
-}\
+}
