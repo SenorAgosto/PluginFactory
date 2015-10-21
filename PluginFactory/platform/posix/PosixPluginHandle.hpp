@@ -8,30 +8,50 @@ namespace PluginFactory { namespace platform { namespace posix {
     {
     public:
         using CreatePluginMethod = void* (*)(void*);
-        PosixPluginHandle(LibraryHandle libraryHandle, void* symbolAddress);
+        using DeletePluginMethod = void (*)(void*);
         
+        struct AsSharedPtr {} static create_shared;
+        
+        PosixPluginHandle(LibraryHandle libraryHandle, void* createAddress, void* deleteAddress);
+
+// TODO: add a deleter to the pointer returned by operator()
         // invoke the createPlugin method contained in the plugin,
         // return the pointer to the created plugin.
-        PluginInterface* operator()(PluginServiceInterface& service);
+        std::unique_ptr<PluginInterface> operator()(PluginServiceInterface& service);
+        std::shared_ptr<PluginInterface> operator()(PluginServiceInterface& service, AsSharedPtr /*create_shared*/);
         
     private:
         // function pointer for the createPlugin in our loaded plugin
         CreatePluginMethod createPlugin_;
+        DeletePluginMethod deletePlugin_;
+        
         LibraryHandle libraryHandle_;
     };
     
     
+    // initialize static member
     template<class PluginInterface, class PluginServiceInterface>
-    PosixPluginHandle<PluginInterface, PluginServiceInterface>::PosixPluginHandle(LibraryHandle libraryHandle, void* symbolAddress)
-        : createPlugin_(reinterpret_cast<CreatePluginMethod>(symbolAddress))
+    typename PosixPluginHandle<PluginInterface, PluginServiceInterface>::AsSharedPtr PosixPluginHandle<PluginInterface, PluginServiceInterface>::create_shared;
+    
+    template<class PluginInterface, class PluginServiceInterface>
+    PosixPluginHandle<PluginInterface, PluginServiceInterface>::PosixPluginHandle(LibraryHandle libraryHandle, void* createAddress, void* deleteAddress)
+        : createPlugin_(reinterpret_cast<CreatePluginMethod>(createAddress))
+        , deletePlugin_(reinterpret_cast<DeletePluginMethod>(deleteAddress))
         , libraryHandle_(std::move(libraryHandle))
     {
     }
     
     template<class PluginInterface, class PluginServiceInterface>
-    PluginInterface* PosixPluginHandle<PluginInterface, PluginServiceInterface>::operator()(PluginServiceInterface& service)
+    std::unique_ptr<PluginInterface> PosixPluginHandle<PluginInterface, PluginServiceInterface>::operator()(PluginServiceInterface& service)
     {
         auto plugin = createPlugin_(static_cast<void*>(&service));
-        return static_cast<PluginInterface*>(plugin);
+        return std::unique_ptr<PluginInterface>(static_cast<PluginInterface*>(plugin));
+    }
+    
+    template<class PluginInterface, class PluginServiceInterface>
+    std::shared_ptr<PluginInterface> PosixPluginHandle<PluginInterface, PluginServiceInterface>::operator()(PluginServiceInterface& service, AsSharedPtr /*create_shared*/)
+    {
+        auto plugin = createPlugin_(static_cast<void*>(&service));
+        return std::shared_ptr<PluginInterface>(static_cast<PluginInterface*>(plugin));
     }
 }}}
