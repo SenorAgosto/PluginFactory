@@ -13,6 +13,11 @@ namespace PluginFactory {
     {
     }
     
+    PluginNotFoundException::PluginNotFoundException(const std::string& pluginName)
+        : std::runtime_error("Plugin '" + pluginName + "' not found in the PluginFactory.")
+    {
+    }
+    
     PluginLoaderException::PluginLoaderException(const boost::filesystem::path& path, const std::string& message)
         : std::runtime_error("Plugin (" + path.string() + ") failed to load : " + message)
     {
@@ -25,11 +30,6 @@ namespace PluginFactory {
     
     PluginCreationMethodNotFoundInPluginCode::PluginCreationMethodNotFoundInPluginCode(const boost::filesystem::path& path)
         : PluginLoaderException(path, "Symbol 'createPlugin' not found in plugin library.")
-    {
-    }
-    
-    PluginDeletionMethodNotFoundInPluginCode::PluginDeletionMethodNotFoundInPluginCode(const boost::filesystem::path& path)
-        : PluginLoaderException(path, "Symbol 'deletePlugin' not found in plugin library.")
     {
     }
 }
