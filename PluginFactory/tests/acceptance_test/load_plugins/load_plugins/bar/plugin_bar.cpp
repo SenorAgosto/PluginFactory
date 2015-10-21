@@ -28,4 +28,4 @@ namespace bar {
     
 }
 
-MAKE_PLUGIN_CREATION_METHOD(load_plugins::MyPlugin, bar::BarPlugin)
+MAKE_PLUGIN_METHODS(load_plugins::MyPlugin, bar::BarPlugin)
