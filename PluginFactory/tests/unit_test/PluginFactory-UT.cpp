@@ -80,11 +80,6 @@ namespace {
     
     TEST_FIXTURE(PluginFactoryFixture, callCreatePlugin)
     {
-        auto plugin = factory.instance("something");
-    }
-    
-    TEST_FIXTURE(PluginFactoryFixture, callCreatePluginWithCreateShared)
-    {
-        auto plugin = factory.instance("something", PluginFactory::PluginFactory::create_shared);
+        CHECK_THROW(factory.instance("something"), ::PluginFactory::PluginNotFoundException);
     }
 }
