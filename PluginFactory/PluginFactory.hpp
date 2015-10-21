@@ -1,11 +1,13 @@
 #pragma once
+#include <PluginFactory/PluginDeleter.hpp>
+#include <PluginFactory/Exceptions.hpp>
+
 #include <PluginFactory/details/NullPluginService.hpp>
 #include <PluginFactory/details/PluginExtensionHelper.hpp>
 #include <PluginFactory/details/PluginHandle.hpp>
 #include <PluginFactory/details/PolicyHolder.hpp>
 #include <PluginFactory/details/PluginLoader.hpp>
 #include <PluginFactory/details/PolicyProperties.hpp>
-#include <PluginFactory/Exceptions.hpp>
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
@@ -49,14 +51,13 @@ namespace PluginFactory {
         void unload();      // unload all loaded plugins
         void unload(const boost::filesystem::path& pluginPath); // unload a specific plugin (@pluginPath)
         
-        std::unique_ptr<PluginInterface> instance(const std::string& plugin);
+        std::unique_ptr<PluginInterface, PluginDeleter<PluginInterface>> instance(const std::string& plugin);
         std::shared_ptr<PluginInterface> instance(const std::string& pluginName, AsSharedTagType /*create_shared*/);
         
         std::vector<std::string> availablePlugins() const;
         
     private:
         using PluginPath = std::string;
-        using PluginInstanceMethod = std::function<PluginInterface* (PluginServiceInterface&)>;
         std::unordered_map<PluginPath, details::PluginHandle<PluginInterface, PluginServiceInterface>> plugins_;
         
         boost::filesystem::path pluginDirectory_;
@@ -65,10 +66,11 @@ namespace PluginFactory {
         std::string compilerToken_;
         std::string serviceVersion_;
     };
+
     
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
     AsSharedTagType PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::create_shared;
-    
+
     
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
     template<typename... Args>
@@ -144,9 +146,9 @@ namespace PluginFactory {
     }
 
     template<class PluginInterface, class PluginServiceInterface, class PolicyOwnershipProperty>
-    std::unique_ptr<PluginInterface> PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::instance(const std::string& pluginName)
+    std::unique_ptr<PluginInterface, PluginDeleter<PluginInterface>> PluginFactory<PluginInterface, PluginServiceInterface, PolicyOwnershipProperty>::instance(const std::string& pluginName)
     {
-        std::unique_ptr<PluginInterface> p;
+        std::unique_ptr<PluginInterface, PluginDeleter<PluginInterface>> p;
         
         auto iter = plugins_.find(pluginName);
         if(iter != plugins_.end())
