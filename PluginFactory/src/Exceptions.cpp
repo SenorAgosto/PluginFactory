@@ -24,7 +24,12 @@ namespace PluginFactory {
     }
     
     PluginCreationMethodNotFoundInPluginCode::PluginCreationMethodNotFoundInPluginCode(const boost::filesystem::path& path)
-        : PluginLoaderException(path, "Symbol 'createPlugin' not found in plugin library")
+        : PluginLoaderException(path, "Symbol 'createPlugin' not found in plugin library.")
+    {
+    }
+    
+    PluginDeletionMethodNotFoundInPluginCode::PluginDeletionMethodNotFoundInPluginCode(const boost::filesystem::path& path)
+        : PluginLoaderException(path, "Symbol 'deletePlugin' not found in plugin library.")
     {
     }
 }
