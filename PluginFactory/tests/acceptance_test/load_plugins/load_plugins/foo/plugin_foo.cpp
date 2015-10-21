@@ -27,4 +27,4 @@ namespace foo {
     };
 }
 
-MAKE_PLUGIN_CREATION_METHOD(foo::FooPlugin)
+MAKE_PLUGIN_CREATION_METHOD(load_plugins::MyPlugin, foo::FooPlugin)
