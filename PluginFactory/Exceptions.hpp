@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>
+#include <string>
 
 namespace boost { namespace filesystem {
     class path;
@@ -19,6 +20,12 @@ namespace PluginFactory {
         PluginPathIsntDirectory(const boost::filesystem::path& path);
     };
 
+    class PluginNotFoundException : public std::runtime_error
+    {
+    public:
+        PluginNotFoundException(const std::string& pluginName);
+    };
+    
     class PluginLoaderException : public std::runtime_error
     {
     public:
@@ -35,11 +42,5 @@ namespace PluginFactory {
     {
     public:
         PluginCreationMethodNotFoundInPluginCode(const boost::filesystem::path& path);
-    };
-    
-    class PluginDeletionMethodNotFoundInPluginCode : public PluginLoaderException
-    {
-    public:
-        PluginDeletionMethodNotFoundInPluginCode(const boost::filesystem::path& path);
-    };
+    };    
 }
