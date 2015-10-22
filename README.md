@@ -33,15 +33,65 @@ The following code snippet shows how to use the PluginFactory.
 
 #### Creating a plugin
 
-    // TODO: implement a small example demonstrating how to implement a plugin. 
+PluginFactory plugins are concrete implementatinos of a C++ abstract interface. Interactions with the plugin from the main program happen through this interface. Let's define a simple plugin interface to use with our example plugin.
 
-NOTE: generally speaking it is good advice that memory shouldn't pass a process/shared-lib
-boundary because they may have been compiled with different allocators.
+    namespace plugin_example {
 
-We're going to ignore that advice and instead REQUIRE the plugins to be compiled
-with the same settings as the main process. It greatly simplifies working with
-the shared libs at the expense of being less flexible. Because of this choice, plugins
-compiled with different versions of compiler tool chains may fail to load. 
+        class PluginInterface
+        {
+        public:
+            virtual ~PluginInterface(){}
+
+            virtual void do_stuff() = 0;
+        };
+    }
+
+When creating concrete plugins, we can provide an interface to them so they can affect change in the main process. This interface is refered to as the `PluginServiceInterface`. 
+
+    namespace plugin_example {
+
+        class PluginService 
+        {
+        public:
+            virtual ~PluginService(){}
+            virtual pluginCalled(char const * const name) = 0;
+        };
+    }
+
+Providing this interface is _not_ required, the default is a null interface that does nothing. Whether or not the service interface is desired, because plugins reside in shared libraries, we have to take the service interface as a `void*` in the constructor.  
+
+Let's implement a concrete plugin implementing the plugin_example::PluginInterface example. 
+
+    #include <PluginFactory/MakePluginMethods.hpp>
+
+    namespace MyPlugin {
+
+        class MyPlugin : public plugin_example::PluginInterface
+        {
+        public:
+            MyPlugin(void* pluginService)
+                : pluginService_(static_cast<plugin_example::PluginService*>(pluginService))
+            {
+            }
+
+            void do_stuff() override 
+            {
+                std::cout << "I'm a plugin!!" << std::endl;
+                pluginService_->pluginCalled("MyPlugin");
+            }
+
+        private:
+            plugin_example::PluginService* pluginService_;
+        };
+    }
+
+    // use a helper macro to define required creation methods in our shared 
+    // library.
+    MAKE_PLUGIN_METHODS(plugin_example::PluginInterface, MyPlugin::MyPlugin)
+
+Then somewhere in the main process, we would use the PluginFactory to load the plugin and interact with it. In this case, the plugin factory declaration would look like `PluginFactory::PluginFactory<plugin_example::MyPlugin, plugin_example::PluginService>`.
+
+See PluginFactory/tests/acceptance_test/load_plugin for example code.
 
 #### Compiling your plugin on POSIX 
 
