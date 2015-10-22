@@ -87,6 +87,18 @@ Let's implement a concrete plugin implementing the plugin_example::PluginInterfa
 
     // use a helper macro to define required creation methods in our shared 
     // library.
+    // 
+    // NOTE: we expect this to reside in the global namespace. Failure
+    // to put this in the global namespace will mean your plugin won't 
+    // be able to be instanced correctly. This macro creates a function 
+    // called createPlugin(). 
+    // 
+    // NOTE: We don't have to worry about namespace pollution on POSIX
+    // systems as we're loading library symbols using RTLD_LOCAL. Every
+    // plugin loaded can contain the same symbol name as every other 
+    // plugin, or can contain symbols found in the main process. 
+    // Using RTLD_LOCAL shields us from many problems faced when using 
+    // the default RTLD_GLOBAL.
     MAKE_PLUGIN_METHODS(plugin_example::PluginInterface, MyPlugin::MyPlugin)
 
 Then somewhere in the main process, we would use the PluginFactory to load the plugin and interact with it. In this case, the plugin factory declaration would look like `PluginFactory::PluginFactory<plugin_example::MyPlugin, plugin_example::PluginService>`.
