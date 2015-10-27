@@ -1,7 +1,5 @@
 #pragma once 
-
-// TODO: implement header to determine the platform
-#define BUILD_TRAITS_PLATFORM Platform::macosx
+#include <PluginFactory/details/PlatformConfig.hpp>
 
 struct build_traits
 {
