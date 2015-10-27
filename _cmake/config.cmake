@@ -21,6 +21,10 @@ if(UNIX)
     include(_cmake/platforms/unix.cmake)
 endif()
 
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    include(_cmake/platforms/macosx.cmake)
+endif()
+
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     include(_cmake/platforms/linux.cmake)
 endif()
