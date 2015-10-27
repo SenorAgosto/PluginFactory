@@ -17,7 +17,7 @@ if(PC_HOMEBREW_PATH)
 endif()
 
 find_path(UNITTEST++_INCLUDE_DIR UnitTest++/UnitTest++.h
-    HINTS ${PC_UNITTEST++_INCLUDEDIR} ${PC_UNITTEST++_INCLUDE_DIRS} ${PC_HOMEBREW_INCLUDE_DIRS}
+    HINTS ${PC_UNITTEST++_INCLUDEDIR} ${PC_UNITTEST++_INCLUDE_DIRS} ${PC_HOMEBREW_INCLUDE_DIRS} /usr/include /usr/local/include
     PATH_SUFFIXES UnitTest++ )
 
 find_library(UNITTEST++_LIBRARY NAMES UnitTest++ libUnitTest++
