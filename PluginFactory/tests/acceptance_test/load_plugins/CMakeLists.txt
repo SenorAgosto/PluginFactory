@@ -23,7 +23,7 @@ file(GLOB load_plugins_src
 	${CMAKE_CURRENT_SOURCE_DIR}/load_plugins/*)
 add_executable(load_plugins ${load_plugins_src})
 add_dependencies(PluginFactory plugin_foo plugin_bar) 
-target_link_libraries(load_plugins PluginFactory ${Boost_LIBRARIES})
+target_link_libraries(load_plugins PluginFactory ${Boost_LIBRARIES} ${DL_LIBRARIES})
 
 if(POSIX)
     set_property(TARGET plugin_foo PROPERTY COMPILE_FLAGS --export-dynamic)

@@ -1,5 +1,6 @@
 MAKE_LIBRARY(PluginFactory
     DEPENDENCIES
 	${Boost_LIBRARIES}
+	${DL_LIBRARIES}
 )
 
