@@ -21,6 +21,9 @@ if(UNIX)
     include(_cmake/platforms/unix.cmake)
 endif()
 
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    include(_cmake/platforms/linux.cmake)
+endif()
 
 # test and load appropriate compiler configurations 
 set(cxx_compiler ${CMAKE_CXX_COMPILER_ID})
