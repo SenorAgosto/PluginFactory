@@ -1,5 +1,5 @@
 #pragma once 
-#include <PluginFactory/details/build_traits.hpp>
+#include <build_traits/build_traits.hpp>
 
 // primary template declaration
 #include <PluginFactory/details/PluginHandleImpl.hpp>

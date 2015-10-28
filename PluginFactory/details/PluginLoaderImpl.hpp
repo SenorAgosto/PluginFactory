@@ -1,5 +1,5 @@
 #pragma once
-#include <PluginFactory/details/build_traits.hpp>
+#include <build_traits/build_traits.hpp>
 
 namespace PluginFactory { namespace details {
     

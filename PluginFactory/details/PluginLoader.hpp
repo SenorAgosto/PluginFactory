@@ -1,5 +1,5 @@
 #pragma once 
-#include <PluginFactory/details/build_traits.hpp>
+#include <build_traits/build_traits.hpp>
 
 ////////////////////////////////////
 // This header is organized in the following way:

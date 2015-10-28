@@ -1,5 +1,5 @@
 #pragma once 
-#include <PluginFactory/details/build_traits.hpp>
+#include <build_traits/build_traits.hpp>
 #include <PluginFactory/platform/posix/PosixPluginLoader.hpp>
 
 // the namespace here doesn't match the filesystem layout because
