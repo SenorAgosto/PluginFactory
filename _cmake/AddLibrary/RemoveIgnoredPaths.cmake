@@ -11,6 +11,7 @@ function(remove_ignored_paths filtered_paths)
     set(filtered "")
     
     foreach(path ${paths})
+        # message("*** PATH: ${path} ***")
 	split_path(${path} split_path)
 	
 	list(LENGTH split_path length)

@@ -24,8 +24,9 @@ function(MAKE_LIBRARY LIB_NAME)
 	add_source(
 		${CMAKE_CURRENT_SOURCE_DIR} 
 		install_headers header_files source_files
-		FILTER_DIRS "tests" "testing")
-	add_library(${library_name} ${lib_configuration} ${header_files} ${source_files} ${generated_header_files} ${generated_source_files})
+		FILTER_DIRS "tests" "testing" "platform")
+	
+	add_library(${library_name} ${lib_configuration} ${header_files} ${source_files} ${generated_header_files} ${generated_source_files} ${platform_headers} ${platform_source})
 
 	foreach(flag ${compiler_flags})
 		set_property(TARGET ${library_name} APPEND_STRING PROPERTY COMPILE_FLAGS "${flag} ")
