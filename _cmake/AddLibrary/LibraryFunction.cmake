@@ -68,7 +68,12 @@ function(MAKE_LIBRARY LIB_NAME)
 		set(executable_name "${library_name}-UT")
 		message("Adding Unit Test Executable '${executable_name}'")
 
-		add_source("${CMAKE_CURRENT_SOURCE_DIR}/tests/unit_test/" install_ut_headers ut_headers ut_implementation)
+		add_source(
+			"${CMAKE_CURRENT_SOURCE_DIR}/tests/unit_test/" 
+			install_ut_headers 
+			ut_headers 
+			ut_implementation
+			FILTER_DIRS "..")
 		add_executable(${executable_name} ${ut_headers} ${ut_implementation} ${generated_ut_source_files})
 
 		foreach(flag ${ut_compiler_flags})
