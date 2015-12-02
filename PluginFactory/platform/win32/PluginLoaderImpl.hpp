@@ -1,24 +1,13 @@
 #pragma once
+#include <PluginFactory/platform/win32/WindowsPluginLoader.hpp>
 
+// the namespace here doesn't match the filesystem
+// layout because we're implementing a specialization.
 namespace PluginFactory { namespace details {
     
-    class WindowsPluginLoader
-    {
-    public:
-        PosixPluginLoader(const boost::filesystem::path& /*plugin*/){}
-        
-        void validateCompiler(const std::string& /*compilerToken*/){}
-        void validatePluginVersion(const std::string& /*pluginVersion*/){}
-        void validatePluginServiceVersion(const std::string& /*serviceVersion*/){}
-        
-        template<class PluginInterface, class PluginServiceInterface>
-        PluginHandle<PluginInterface, PluginServiceInterface> getPluginHandle()
-        {
-            return PluginHandle<PluginInterface, PluginServiceInterface>();
-        }
-        
-    private:
-        HMODULE libraryHandle_;
-    };
-    
+	template<>
+	struct PluginLoaderImpl<build_traits::Platform::windows> : public platform::win32::WindowsPluginLoader
+	{
+		using platform::win32::WindowsPluginLoader::WindowsPluginLoader;
+	};
 }}
