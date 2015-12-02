@@ -11,6 +11,8 @@ namespace PluginFactory { namespace platform { namespace win32 {
 	{
 	public:
 		LibraryHandle(const boost::filesystem::path& plugin);
+		LibraryHandle(LibraryHandle&& other);
+
 		~LibraryHandle();
 
 		HMODULE get();

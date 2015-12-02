@@ -17,6 +17,12 @@ namespace PluginFactory { namespace platform { namespace win32 {
 		}
 	}
 
+	LibraryHandle::LibraryHandle(LibraryHandle&& other)
+		: lib_(other.lib_)
+	{
+		other.lib_ = nullptr;
+	}
+
 	LibraryHandle::~LibraryHandle()
 	{
 		if(lib_)
