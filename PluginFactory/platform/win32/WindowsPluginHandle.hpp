@@ -8,7 +8,7 @@ namespace PluginFactory { namespace platform { namespace win32 {
 	{
 	public:
 		using CreatePluginMethod = void* (*)(void*);
-		WindowsPluginHandle(LibraryHandle libraryHandle, FARPROC createAddress);
+		WindowsPluginHandle(LibraryHandle&& libraryHandle, FARPROC createAddress);
 
 		// invoke the createPlugin method contained in the plugin,
 		// return the pointer to the created plugin.
@@ -22,9 +22,9 @@ namespace PluginFactory { namespace platform { namespace win32 {
 
 
 	template<class PluginInterface, class PluginServiceInterface>
-	WindowsPluginHandle<PluginInterface, PluginServiceInterface>::WindowsPluginHandle(LibraryHandle libraryHandle, FARPROC createAddress)
+	WindowsPluginHandle<PluginInterface, PluginServiceInterface>::WindowsPluginHandle(LibraryHandle&& libraryHandle, FARPROC createAddress)
 		: createPlugin_(reinterpret_cast<CreatePluginMethod>(createAddress))
-		, libraryHandle_(libraryHandle)
+		, libraryHandle_(std::move(libraryHandle))
 	{
 	}
 
