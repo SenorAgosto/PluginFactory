@@ -8,7 +8,13 @@
 #else
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wnewline-eof"
-    #include <UnitTest++/UnitTest++.h>
+
+    // Ubuntu and Debian use lowercase directory names :/
+    #if defined UBUNTU || defined DEBIAN
+        #include <unittest++/UnitTest++.h>
+    #else 
+        #include <UnitTest++/UnitTest++.h>
+    #endif
     #pragma clang diagnostic pop
 #endif
 
@@ -16,4 +22,3 @@
 #ifndef REQUIRE
     #define REQUIRE
 #endif
-
