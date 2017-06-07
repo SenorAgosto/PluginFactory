@@ -119,6 +119,7 @@ On Windows, you'll need to use a compiler intrinsic attribute to indicate which 
 
 - c++11
 - [boost](http://boost.org). Uses boost::filesystem::path.
+- [build_traits](https://github.com/paxos1977/build_traits)
 
 Used for unit testing on all platforms:
 
