@@ -26,13 +26,15 @@ function(add_source BASE_DIR INSTALL_HEADER_FILES HEADER_FILES IMPLEMENTATION_FI
 	file(GLOB_RECURSE source_files RELATIVE ${BASE_DIR} ${patterns})	
 	filter_path_list(header_files SOURCES ${source_files} PATTERNS ${header_patterns})
 	filter_path_list(implementation_files SOURCES ${source_files} PATTERNS ${src_patterns})
-		
+	
 	remove_ignored_paths(header_files PATHS ${header_files} FILTER_DIRS ${filter_dirs} "platform")
 	remove_ignored_paths(implementation_files PATHS ${implementation_files} FILTER_DIRS ${filter_dirs} "platform")
 	remove_ignored_paths_regex(implementation_files PATHS ${implementation_files} FILTER_DIRS "platform")
 
 	# determine platform and add platform folder contents
 	determine_platform(platform)
+	determine_platform_family(platform_family)
+
 	if(EXISTS ${BASE_DIR}/src/platform/${platform})
 		file(GLOB_RECURSE platform_sources RELATIVE ${BASE_DIR}/src/platform/${platform} ${src_patterns})
 	endif()
@@ -41,18 +43,18 @@ function(add_source BASE_DIR INSTALL_HEADER_FILES HEADER_FILES IMPLEMENTATION_FI
 		file(GLOB_RECURSE platform_headers RELATIVE ${BASE_DIR}/platform/${platform} ${header_patterns})
 	endif()
 
-	if(EXISTS ${BASE_DIR}/platform/posix AND POSIX)
-		file(GLOB_RECURSE posix_headers RELATIVE ${BASE_DIR}/platform/posix ${header_patterns})
+	if(EXISTS ${BASE_DIR}/platform/${platform_family})
+		file(GLOB_RECURSE platform_family_headers RELATIVE ${BASE_DIR}/platform/${platform_family} ${header_patterns})
 	endif()
 
-	if(EXISTS ${BASE_DIR}/src/platform/posix AND POSIX)
-		file(GLOB_RECURSE posix_sources RELATIVE ${BASE_DIR}/src/platform/posix ${src_patterns})
+	if(EXISTS ${BASE_DIR}/src/platform/${platform_family})
+		file(GLOB_RECURSE platform_family_sources RELATIVE ${BASE_DIR}/src/platform/${platform_family} ${src_patterns})
 	endif()
 
 	remove_ignored_paths_regex(platform_headers PATHS ${platform_headers} FILTER_DIRS "\\.\\.")
 	remove_ignored_paths_regex(platform_sources PATHS ${platform_sources} FILTER_DIRS "\\.\\.")
-	remove_ignored_paths_regex(posix_headers PATHS ${posix_headers} FILTER_DIRS "\\.\\.")
-	remove_ignored_paths_regex(posix_sources PATHS ${posix_sources} FILTER_DIRS "\\.\\.")
+	remove_ignored_paths_regex(platform_family_headers PATHS ${platform_family_headers} FILTER_DIRS "\\.\\.")
+	remove_ignored_paths_regex(platform_family_sources PATHS ${platform_family_sources} FILTER_DIRS "\\.\\.")
 
 	# Setup Groups for Project Solutions
 	unset(header_groups)
@@ -68,10 +70,10 @@ function(add_source BASE_DIR INSTALL_HEADER_FILES HEADER_FILES IMPLEMENTATION_FI
 		list(APPEND platform_header_groups ${header_group})
 	endforeach(header)
 
-	foreach(header ${posix_headers})
-		get_group("platform/posix/${header}" "interface" header_group)
-		list(APPEND posix_header_group_${header_group} ${header})
-		list(APPEND posix_header_groups ${header_group})
+	foreach(header ${platform_family_headers})
+		get_group("platform/${platform_family}/${header}" "interface" header_group)
+		list(APPEND platform_family_header_group_${header_group} ${header})
+		list(APPEND platform_family_header_groups ${header_group})
 	endforeach(header)
 
 	# Setup Groups for Project Solutions
@@ -88,10 +90,10 @@ function(add_source BASE_DIR INSTALL_HEADER_FILES HEADER_FILES IMPLEMENTATION_FI
 		list(APPEND platform_source_groups ${source_group})
 	endforeach(source)
 
-	foreach(source ${posix_sources})
-		get_group("src/platform/posix/${source}" "source" source_group)
-		list(APPEND posix_source_group_${source_group} ${source})
-		list(APPEND posix_source_groups ${source_group})
+	foreach(source ${platform_family_sources})
+		get_group("src/platform/${platform_family}/${source}" "source" source_group)
+		list(APPEND platform_family_source_group_${source_group} ${source})
+		list(APPEND platform_family_source_groups ${source_group})
 	endforeach(source)
 
 
@@ -103,8 +105,8 @@ function(add_source BASE_DIR INSTALL_HEADER_FILES HEADER_FILES IMPLEMENTATION_FI
 		list(REMOVE_DUPLICATES platform_header_groups)
 	endif()
 
-	if(posix_header_groups)
-		list(REMOVE_DUPLICATES posix_header_groups)
+	if(platform_family_header_groups)
+		list(REMOVE_DUPLICATES platform_family_header_groups)
 	endif()
 
 	if(source_groups)
@@ -115,8 +117,8 @@ function(add_source BASE_DIR INSTALL_HEADER_FILES HEADER_FILES IMPLEMENTATION_FI
 		list(REMOVE_DUPLICATES platform_source_groups)
 	endif()
 
-	if(posix_source_groups)
-		list(REMOVE_DUPLICATES posix_source_groups)
+	if(platform_family_source_groups)
+		list(REMOVE_DUPLICATES platform_family_source_groups)
 	endif()
 
 
@@ -133,10 +135,10 @@ function(add_source BASE_DIR INSTALL_HEADER_FILES HEADER_FILES IMPLEMENTATION_FI
 		unset(platform_header_group_${header_group})
 	endforeach(header_group)
 
-	foreach(header_group ${posix_header_groups})
-		add_base_dir(posix_header_group_${header_group} PATHS ${posix_header_group_${header_group}} BASE_DIR "${BASE_DIR}/platform/posix")
-		source_group(${header_group} FILES ${posix_header_group_${header_group}})
-		unset(posix_header_group_${header_group})
+	foreach(header_group ${platform_family_header_groups})
+		add_base_dir(platform_family_header_group_${header_group} PATHS ${platform_family_header_group_${header_group}} BASE_DIR "${BASE_DIR}/platform/${platform_family}")
+		source_group(${header_group} FILES ${platform_family_header_group_${header_group}})
+		unset(platform_family_header_group_${header_group})
 	endforeach(header_group)
 
 
@@ -153,10 +155,10 @@ function(add_source BASE_DIR INSTALL_HEADER_FILES HEADER_FILES IMPLEMENTATION_FI
 		unset(platform_source_group_${source_group})
 	endforeach(source_group)
 
-	foreach(source_group ${posix_source_groups})
-		add_base_dir(posix_source_groups_${source_group} PATHS ${posix_source_group_${source_group}} BASE_DIR "${BASE_DIR}/src/platform/posix")
-		source_group(${source_group} FILES ${posix_source_group_${source_group}})
-		unset(posix_source_group_${source_group})
+	foreach(source_group ${platform_family_source_groups})
+		add_base_dir(platform_family_source_groups_${source_group} PATHS ${platform_family_source_group_${source_group}} BASE_DIR "${BASE_DIR}/src/platform/${platform_family}")
+		source_group(${source_group} FILES ${platform_family_source_group_${source_group}})
+		unset(platform_family_source_group_${source_group})
 	endforeach(source_group)
 
 
@@ -164,18 +166,19 @@ function(add_source BASE_DIR INSTALL_HEADER_FILES HEADER_FILES IMPLEMENTATION_FI
     set(fullpath_header_files ${header_files})
 	add_base_dir(header_files PATHS ${header_files} BASE_DIR ${BASE_DIR})
 	add_base_dir(platform_headers PATHS ${platform_headers} BASE_DIR ${BASE_DIR}/platform/${platform})
-	if(POSIX)
-		add_base_dir(posix_headers PATHS ${posix_headers} BASE_DIR ${BASE_DIR}/platform/posix)
+	if(EXISTS ${BASE_DIR}/platform/${platform_family})
+		message("Adding base dir to platform family headers")
+		add_base_dir(platform_family_headers PATHS ${platform_family_headers} BASE_DIR ${BASE_DIR}/platform/${platform_family})
 	endif()
 
 	add_base_dir(implementation_files PATHS ${implementation_files} BASE_DIR ${BASE_DIR})
 	add_base_dir(platform_sources PATHS ${platform_sources} BASE_DIR ${BASE_DIR}/src/platform/${platform})
-	if(POSIX)
-		add_base_dir(posix_sources PATHS ${posix_sources} BASE_DIR ${BASE_DIR}/src/platform/posix)
+	if(EXISTS ${BASE_DIR}/src/platform/${platform_family})
+		add_base_dir(platform_family_sources PATHS ${platform_family_sources} BASE_DIR ${BASE_DIR}/src/platform/${platform_family})
 	endif()
 
-	list(APPEND header_files ${platform_headers} ${posix_headers})
-	list(APPEND implementation_files ${platform_sources} ${posix_sources})
+	list(APPEND header_files ${platform_headers} ${platform_family_headers})
+	list(APPEND implementation_files ${platform_sources} ${platform_family_sources})
 
 	# return the found implementation files to the calling scope
 	set(${IMPLEMENTATION_FILES} ${implementation_files} PARENT_SCOPE)
