@@ -150,13 +150,13 @@ function(add_source BASE_DIR INSTALL_HEADER_FILES HEADER_FILES IMPLEMENTATION_FI
 	endforeach(source_group)
 
 	foreach(source_group ${platform_source_groups})
-		add_base_dir(source_group_${source_group} PATHS ${platform_source_group_${source_group}} BASE_DIR "${BASE_DIR}/src/platform/${platform}")
+		add_base_dir(platform_source_group_${source_group} PATHS ${platform_source_group_${source_group}} BASE_DIR "${BASE_DIR}/src/platform/${platform}")
 		source_group(${source_group} FILES ${platform_source_group_${source_group}})
 		unset(platform_source_group_${source_group})
 	endforeach(source_group)
 
 	foreach(source_group ${platform_family_source_groups})
-		add_base_dir(platform_family_source_groups_${source_group} PATHS ${platform_family_source_group_${source_group}} BASE_DIR "${BASE_DIR}/src/platform/${platform_family}")
+		add_base_dir(platform_family_source_group_${source_group} PATHS ${platform_family_source_group_${source_group}} BASE_DIR "${BASE_DIR}/src/platform/${platform_family}")
 		source_group(${source_group} FILES ${platform_family_source_group_${source_group}})
 		unset(platform_family_source_group_${source_group})
 	endforeach(source_group)
@@ -167,7 +167,6 @@ function(add_source BASE_DIR INSTALL_HEADER_FILES HEADER_FILES IMPLEMENTATION_FI
 	add_base_dir(header_files PATHS ${header_files} BASE_DIR ${BASE_DIR})
 	add_base_dir(platform_headers PATHS ${platform_headers} BASE_DIR ${BASE_DIR}/platform/${platform})
 	if(EXISTS ${BASE_DIR}/platform/${platform_family})
-		message("Adding base dir to platform family headers")
 		add_base_dir(platform_family_headers PATHS ${platform_family_headers} BASE_DIR ${BASE_DIR}/platform/${platform_family})
 	endif()
 
