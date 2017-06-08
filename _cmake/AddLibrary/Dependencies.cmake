@@ -3,6 +3,7 @@ set(dir ${CMAKE_MODULE_PATH}/AddLibrary/)
 
 include(${dir}/AddBaseDir.cmake)
 include(${dir}/DeterminePlatform.cmake)
+include(${dir}/DeterminePlatformFamily.cmake)
 include(${dir}/FilterPathList.cmake)
 include(${dir}/GetGroup.cmake)
 include(${dir}/GetInstallGroup.cmake)
