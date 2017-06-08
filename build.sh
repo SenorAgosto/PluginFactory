@@ -1,4 +1,4 @@
 #!/bin/sh
 # Start Xcode
-mkdir -p build && cd build && cmake -G "Xcode" .. && open PluginFactory.xcodeproj && cd ..
+mkdir -p xcode_build && cd xcode_build && cmake -G "Xcode" .. && open PluginFactory.xcodeproj && cd ..
 
